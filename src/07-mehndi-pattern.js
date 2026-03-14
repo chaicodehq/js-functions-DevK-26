@@ -52,22 +52,54 @@
  *   isPalindrome("madam")     // => true
  *   generatePattern(3)        // => ["*", "**", "***", "**", "*"]
  */
+
+
+
 export function repeatChar(char, n) {
-  // Your code here
+  if (typeof char !== "string" || !char || n <= 0) return "";
+  if (n === 1) return char;
+  return char + repeatChar(char, n - 1);
 }
 
 export function sumNestedArray(arr) {
-  // Your code here
+  if (!Array.isArray(arr)) return 0;
+  let sum = 0;
+  for (const item of arr) {
+    if (Array.isArray(item)) {
+      sum += sumNestedArray(item);
+    } else if (typeof item === "number") {
+      sum += item;
+    }
+  }
+  return sum;
 }
 
 export function flattenArray(arr) {
-  // Your code here
+  if (!Array.isArray(arr)) return [];
+  let flat = [];
+  for (const item of arr) {
+    if (Array.isArray(item)) {
+      flat = flat.concat(flattenArray(item));
+    } else {
+      flat.push(item);
+    }
+  }
+  return flat;
 }
 
 export function isPalindrome(str) {
-  // Your code here
+  if (typeof str !== "string") return false;
+  str = str.toLowerCase();
+  if (str.length <= 1) return true;
+  if (str[0] !== str[str.length - 1]) return false;
+  return isPalindrome(str.slice(1, -1));
 }
 
 export function generatePattern(n) {
-  // Your code here
+    if (typeof n !== "number" || !Number.isInteger(n) || n < 1) return [];
+    function helper(i, max) {
+      if (i > max) return [];
+      return [repeatChar("*", i)].concat(helper(i + 1, max)).concat(i === max ? [] : [repeatChar("*", i)]);
+    }
+    return helper(1, n);
 }
